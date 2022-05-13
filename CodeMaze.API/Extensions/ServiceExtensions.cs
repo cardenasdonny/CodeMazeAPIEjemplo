@@ -1,5 +1,7 @@
 ﻿using CodeMaze.Contracts;
+using CodeMaze.Entities;
 using CodeMaze.LoggerService;
+using Microsoft.EntityFrameworkCore;
 
 namespace CodeMaze.API.Extensions
 {
@@ -27,5 +29,8 @@ namespace CodeMaze.API.Extensions
         {
             services.AddSingleton<ILoggerManager, LoggerManager>();
         }
+
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) => 
+            services.AddDbContext<RepositoryContext>(opts => opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("CodeMaze.Entities")));
     }
 }
