@@ -13,7 +13,11 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 
 builder.Services.ConfigureLoggerService();
-builder.Services.ConfigureSqlContext();
+
+var configuration = builder.Configuration;
+
+builder.Services.ConfigureSqlContext(configuration);
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
