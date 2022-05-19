@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeMaze.Entities.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace CodeMaze.Contracts
 {
     public interface ICompanyRepository
     {
+        IEnumerable<Company> GetAllCompanies(bool trackChanges);
     }
 }
+

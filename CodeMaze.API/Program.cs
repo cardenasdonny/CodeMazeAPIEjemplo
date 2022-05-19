@@ -15,8 +15,9 @@ builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureLoggerService();
 
 var configuration = builder.Configuration;
-
 builder.Services.ConfigureSqlContext(configuration);
+
+builder.Services.ConfigureRepositoryManager();
 
 builder.Services.AddControllers();
 

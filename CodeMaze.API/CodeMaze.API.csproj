@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeMaze.Entities\CodeMaze.Entities.csproj" />
     <ProjectReference Include="..\CodeMaze.LoggerService\CodeMaze.LoggerService.csproj" />
+    <ProjectReference Include="..\CodeMaze.Repository\CodeMaze.Repository.csproj" />
   </ItemGroup>
 
 </Project>
