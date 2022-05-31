@@ -1,4 +1,6 @@
-﻿using CodeMaze.Contracts;
+﻿using AutoMapper;
+using CodeMaze.Contracts;
+using CodeMaze.Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,18 +12,26 @@ namespace CodeMaze.API.Controllers
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
-        public CompaniesController(IRepositoryManager repository, ILoggerManager logger) {
-            _repository = repository; _logger = logger; 
+        private readonly IMapper _mapper;
+        public CompaniesController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+        {
+            _repository = repository; _logger = logger;
+            _mapper = mapper;
         }
-        [HttpGet] public IActionResult GetCompanies() {
-            try {
-                var companies = _repository.Company.GetAllCompanies(trackChanges: false);
-                return Ok(companies); 
-            } catch (Exception ex) 
-            { 
+        [HttpGet]
+        public IActionResult GetCompanies()
+        {
+            try
+            {
+                var companies = _repository.Company.GetAllCompanies(trackChanges: false);               
+                var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
+                return Ok(companiesDto);
+            }
+            catch (Exception ex)
+            {
                 _logger.LogError($"Something went wrong in the {nameof(GetCompanies)} action {ex}");
-                return StatusCode(500, "Internal server error"); 
-            } 
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }
