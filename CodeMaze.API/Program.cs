@@ -1,4 +1,5 @@
 using CodeMaze.API.Extensions;
+using CodeMaze.Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 
@@ -35,6 +36,11 @@ else
 { 
     app.UseHsts(); 
 }
+
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
+
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
