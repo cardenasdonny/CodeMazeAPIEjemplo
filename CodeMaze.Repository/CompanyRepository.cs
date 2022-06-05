@@ -1,11 +1,7 @@
 ﻿using CodeMaze.Contracts;
 using CodeMaze.Entities;
 using CodeMaze.Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace CodeMaze.Repository
 {
@@ -17,5 +13,6 @@ namespace CodeMaze.Repository
         }
         public IEnumerable<Company> GetAllCompanies(bool trackChanges) => FindAll(trackChanges).OrderBy(c => c.Name).ToList();
         public Company GetCompany(Guid companyId, bool trackChanges) => FindByCondition(c => c.Id.Equals(companyId), trackChanges).SingleOrDefault();
+        public void CreateCompany(Company company) => Create(company);
     }
 }
