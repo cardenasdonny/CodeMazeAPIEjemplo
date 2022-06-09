@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CodeMaze.API.ModelBinders;
 using CodeMaze.Contracts;
 using CodeMaze.Entities.DataTransferObjects;
 using CodeMaze.Entities.Models;
@@ -58,8 +59,10 @@ namespace CodeMaze.API.Controllers
             return CreatedAtRoute("CompanyById", new { id = companyToReturn.Id}, companyToReturn); 
         }
 
-        [HttpGet("collection/({ids})", Name = "CompanyCollection")] 
-        public IActionResult GetCompanyCollection(IEnumerable<Guid> ids) 
+
+
+        [HttpGet("collection/({ids})", Name = "CompanyCollection")]
+        public IActionResult GetCompanyCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
         { 
             if (ids == null) 
             { 
@@ -91,6 +94,19 @@ namespace CodeMaze.API.Controllers
             var companyCollectionToReturn = _mapper.Map<IEnumerable<CompanyDto>>(companyEntities);
             var ids = string.Join(",", companyCollectionToReturn.Select(c => c.Id)); 
             return CreatedAtRoute("CompanyCollection", new { ids }, companyCollectionToReturn); 
+        }
+
+        [HttpDelete("{id}")] 
+        public IActionResult DeleteCompany(Guid id) 
+        { 
+            var company = _repository.Company.GetCompany(id, trackChanges: false); 
+            if (company == null) { 
+                _logger.LogInfo($"Company with id: {id} doesn't exist in the database."); 
+                return NotFound(); 
+            } 
+            _repository.Company.DeleteCompany(company); 
+            _repository.Save(); 
+            return NoContent(); 
         }
 
 
